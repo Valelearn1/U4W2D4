@@ -7,6 +7,7 @@ import valentinaferro.u4w2d4.exception.PizzaNotFoundException;
 import valentinaferro.u4w2d4.repository.PizzaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PizzaService {
@@ -16,7 +17,7 @@ public class PizzaService {
         this.pizzaRepository = pizzaRepository;
     }
 
-    public Pizza getById(Long id) {
+    public Pizza getById(UUID id) {
         // findById restituisce un Optional<Pizza> (può essere vuoto se l'id non esiste).
         // orElseThrow: se l'Optional contiene un valore lo restituisce, altrimenti
         // esegue la lambda e lancia l'eccezione custom "non trovata" - equivale a un
@@ -35,7 +36,7 @@ public class PizzaService {
         return pizzaRepository.save(pizza);
     }
 
-    public Pizza update(Long id, Pizza datiAggiornati) {
+    public Pizza update(UUID id, Pizza datiAggiornati) {
         // Riuso getById: se l'id non esiste, lancia già PizzaNotFoundException da solo.
         validate(datiAggiornati);
         Pizza pizzaEsistente = getById(id); // se la validazione non va, non prende l'id
@@ -49,7 +50,7 @@ public class PizzaService {
         return pizzaRepository.save(pizzaEsistente);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         // Anche qui: se l'id non esiste, getById lancia PizzaNotFoundException
         // prima ancora di arrivare alla delete vera e propria.
         Pizza pizza = getById(id);

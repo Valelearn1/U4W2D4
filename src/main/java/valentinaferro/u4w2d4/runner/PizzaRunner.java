@@ -7,6 +7,8 @@ import valentinaferro.u4w2d4.exception.InvalidPizzaException;
 import valentinaferro.u4w2d4.exception.PizzaNotFoundException;
 import valentinaferro.u4w2d4.service.PizzaService;
 
+import java.util.UUID;
+
 // CommandLineRunner separato dal main: Spring esegue automaticamente ogni Bean di
 // questo tipo all'avvio. Qui verifichiamo "a mano" che ogni metodo del Service
 // funzioni, stampando i risultati - inclusi i casi in cui un controllo interviene
@@ -45,7 +47,7 @@ public class PizzaRunner implements CommandLineRunner {
 
         // 5) GET BY ID inesistente -> il controllo del Service deve intervenire
         try {
-            pizzaService.getById(9999L);
+            pizzaService.getById(UUID.randomUUID());
         } catch (PizzaNotFoundException e) {
             System.out.println("Ricerca bloccata correttamente: " + e.getMessage());
         }
@@ -57,7 +59,7 @@ public class PizzaRunner implements CommandLineRunner {
 
         // 7) UPDATE su id inesistente -> il controllo del Service deve intervenire
         try {
-            pizzaService.update(9999L, new Pizza("Fantasma", 5.0, "info", "topping"));
+            pizzaService.update(UUID.randomUUID(), new Pizza("Fantasma", 5.0, "info", "topping"));
         } catch (PizzaNotFoundException e) {
             System.out.println("Update bloccato correttamente: " + e.getMessage());
         }
@@ -68,7 +70,7 @@ public class PizzaRunner implements CommandLineRunner {
 
         // 9) DELETE su id inesistente -> il controllo del Service deve intervenire
         try {
-            pizzaService.delete(9999L);
+            pizzaService.delete(UUID.randomUUID());
         } catch (PizzaNotFoundException e) {
             System.out.println("Delete bloccata correttamente: " + e.getMessage());
         }
