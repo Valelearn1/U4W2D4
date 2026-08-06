@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import valentinaferro.u4w2d4.StatoOrdine;
@@ -36,10 +37,12 @@ public class Ordine {
     @JoinColumn(name = "rider_id")
     private Rider rider;
 
-    public Ordine(LocalDate dataOrdine, StatoOrdine stato, Cliente cliente, Rider rider) {
-        this.dataOrdine = dataOrdine;
-        this.stato = stato;
+    public Ordine(Cliente cliente, Rider rider) {
         this.cliente = cliente;
         this.rider = rider;
+        this.dataOrdine = LocalDate.now();
+        this.stato = StatoOrdine.IN_PREPARAZIONE;
     }
+
+
 }

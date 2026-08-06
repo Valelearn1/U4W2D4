@@ -36,11 +36,28 @@ public class OrdineService {
     // Non riceve un Ordine già pronto: riceve gli id di Cliente e Rider,
     // li cerca (getById lancia già la relativa NotFoundException se non esistono)
     // e associa le entità già persistite, senza crearle da zero.
-    public Ordine create(LocalDate dataOrdine, StatoOrdine stato, UUID clienteId, UUID riderId) {
+    public Ordine create(UUID clienteId, UUID riderId) {
         Cliente cliente = clienteService.getById(clienteId);
         Rider rider = riderService.getById(riderId);
 
-        Ordine ordine = new Ordine(dataOrdine, stato, cliente, rider);
+        Ordine ordine = new Ordine(cliente, rider);
+        return ordineRepository.save(ordine);
+    }
+
+    public Ordine update(UUID id) {
+        // step 1: cerco l'ordine per id
+        Ordine ordine = this.getById(id);
+        // step 2: leggo lo stato dell'ordine
+        StatoOrdine ordineStato = ordine.getStato();
+        // step 3: se è in preparazione, nuovo stato: in consegna. Altrimenti, se in consegna, nuovo stato: consegnato
+        if (ordineStato == StatoOrdine.IN_PREPARAZIONE) {
+            ordine.setStato(StatoOrdine.IN_CONSEGNA);
+        }
+
+        if (ordineStato == StatoOrdine.IN_CONSEGNA) {
+            ordine.setStato(StatoOrdine.CONSEGNATO);
+        }
+        // step 4: salva lo stato
         return ordineRepository.save(ordine);
     }
 }
